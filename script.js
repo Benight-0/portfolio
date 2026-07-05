@@ -6,6 +6,15 @@ let noiseImageData;
 let noiseFrameBuffer;
 let noiseWidth = 0;
 let noiseHeight = 0;
+let noiseTimerId = null;
+
+const noiseSettings = {
+    scale: 8,
+    variance: 30,
+    alpha: 132,
+    interval: 220,
+    grainOpacity: 39,
+};
 
 function gaussianRandom(mean = 0, standardDeviation = 1) {
     let u = 0;
@@ -28,13 +37,20 @@ function clampChannel(value) {
     return Math.max(0, Math.min(255, value));
 }
 
+function applyNoiseCss() {
+    document.documentElement.style.setProperty(
+        "--grain",
+        `rgba(108, 32, 20, ${noiseSettings.grainOpacity / 100})`
+    );
+}
+
 function resizeNoiseCanvas() {
     if (!noiseCanvas) {
         return;
     }
 
-    noiseWidth = Math.max(1, Math.floor(window.innerWidth / 3));
-    noiseHeight = Math.max(1, Math.floor(window.innerHeight / 3));
+    noiseWidth = Math.max(1, Math.floor(window.innerWidth / noiseSettings.scale));
+    noiseHeight = Math.max(1, Math.floor(window.innerHeight / noiseSettings.scale));
 
     noiseCanvas.width = noiseWidth;
     noiseCanvas.height = noiseHeight;
@@ -58,13 +74,27 @@ function renderRgbNoise() {
 
     for (let index = 0; index < noiseFrameBuffer.length; index += 4) {
         const base = 128;
-        noiseFrameBuffer[index] = clampChannel(base + gaussianRandom(0, 82));
-        noiseFrameBuffer[index + 1] = clampChannel(base + gaussianRandom(0, 82));
-        noiseFrameBuffer[index + 2] = clampChannel(base + gaussianRandom(0, 82));
-        noiseFrameBuffer[index + 3] = 120;
+        noiseFrameBuffer[index] = clampChannel(base + gaussianRandom(0, noiseSettings.variance));
+        noiseFrameBuffer[index + 1] = clampChannel(base + gaussianRandom(0, noiseSettings.variance));
+        noiseFrameBuffer[index + 2] = clampChannel(base + gaussianRandom(0, noiseSettings.variance));
+        noiseFrameBuffer[index + 3] = noiseSettings.alpha;
     }
 
     noiseContext.putImageData(noiseImageData, 0, 0);
+}
+
+function restartNoiseTimer() {
+    if (noiseTimerId) {
+        window.clearInterval(noiseTimerId);
+    }
+
+    noiseTimerId = window.setInterval(renderRgbNoise, noiseSettings.interval);
+}
+
+function refreshNoiseBuffers() {
+    resizeNoiseCanvas();
+    renderRgbNoise();
+    restartNoiseTimer();
 }
 
 function wait(ms) {
@@ -199,9 +229,8 @@ window.addEventListener(
     { once: true }
 );
 
-resizeNoiseCanvas();
-renderRgbNoise();
-window.setInterval(renderRgbNoise, 100);
-window.addEventListener("resize", resizeNoiseCanvas);
+applyNoiseCss();
+refreshNoiseBuffers();
+window.addEventListener("resize", refreshNoiseBuffers);
 
 runIntroSequence();
