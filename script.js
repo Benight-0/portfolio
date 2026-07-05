@@ -204,7 +204,7 @@ async function runIntroSequence() {
     await wait(420);
     await typeText("Skibidi", { baseDelay: 52, variance: 18 });
     await wait(420);
-    await typeText(" to my", { baseDelay: 58, variance: 20 });
+    await typeText(" skibidi", { baseDelay: 58, variance: 20 });
     await wait(360);
     await typeText(" website.", { baseDelay: 60, variance: 24 });
     await wait(1300);
