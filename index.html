@@ -3,13 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
+    <title>Passion Project</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="wallpaper"></div>
+    <div class="noise"></div>
+    <canvas id="rgb-noise" aria-hidden="true"></canvas>
+    <div class="particles" aria-hidden="true">
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+    </div>
 
-    <h1>Hello, world!</h1>
-    <p>If you're reading this, GitHub Pages works 🎉</p>
+    <main class="scene-shell">
+        <section id="intro" class="scene scene-active" aria-label="Intro scene">
+            <div class="intro-copy">
+                <p class="eyebrow">Loading story...</p>
+                <h1 class="type-line">
+                    <span id="typewriter-text"></span><span class="caret" aria-hidden="true"></span>
+                </h1>
+            </div>
+        </section>
+
+        <section id="choice" class="scene scene-hidden" aria-label="Choice scene">
+            <div class="placeholder-copy">Choice scene placeholder</div>
+        </section>
+
+        <section id="website" class="scene scene-hidden" aria-label="Website scene">
+            <div class="placeholder-copy">Website scene placeholder</div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>

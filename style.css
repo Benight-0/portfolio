@@ -1,10 +1,260 @@
+:root {
+    --bg: #dc553a;
+    --text: #fff8f1;
+    --text-soft: rgba(255, 248, 241, 0.74);
+    --grain: rgba(108, 32, 20, 0.12);
+    --pixel-shadow: rgba(92, 21, 12, 0.18);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    color: #222;
+    overflow: hidden;
+    font-family: "ITC American Typewriter", "American Typewriter", Courier, "Courier New", monospace;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.wallpaper,
+.noise,
+.rgb-noise,
+.particles,
+.scene-shell {
+    position: fixed;
+    inset: 0;
+}
+
+.wallpaper {
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255, 232, 214, 0.16), transparent 30%),
+        radial-gradient(circle at 80% 12%, rgba(106, 27, 14, 0.24), transparent 28%),
+        radial-gradient(circle at 40% 75%, rgba(255, 239, 228, 0.08), transparent 24%),
+        linear-gradient(135deg, #d44d34 0%, #dc553a 45%, #bd4127 100%);
+    filter: saturate(1.05);
+}
+
+.wallpaper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.32;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(90, 20, 11, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, transparent 50%, var(--pixel-shadow) 50%),
+        linear-gradient(transparent 50%, rgba(255, 239, 228, 0.035) 50%);
+    background-size: 100% 4px, 4px 100%, 6px 6px, 6px 6px;
+    mix-blend-mode: multiply;
+}
+
+.noise {
+    pointer-events: none;
+    opacity: 0.24;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(255, 244, 237, 0.12) 0 0.7px, transparent 0.8px),
+        radial-gradient(circle at 76% 44%, rgba(110, 24, 13, 0.14) 0 0.8px, transparent 0.95px),
+        radial-gradient(circle at 48% 68%, rgba(255, 255, 255, 0.08) 0 0.65px, transparent 0.8px),
+        linear-gradient(90deg, rgba(78, 14, 7, 0.05) 50%, transparent 50%);
+    background-size: 13px 13px, 17px 17px, 11px 11px, 3px 3px;
+    image-rendering: pixelated;
+    mix-blend-mode: soft-light;
+    animation: gaussian-noise 220ms steps(3) infinite;
+}
+
+.rgb-noise {
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    opacity: 0.55;
+    mix-blend-mode: plus-lighter;
+    image-rendering: pixelated;
+}
+
+.particles {
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    bottom: -10vh;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background: rgba(255, 245, 237, 0.55);
+    filter: blur(0.3px);
+    animation: float-up linear infinite;
+}
+
+.particle:nth-child(1) {
+    left: 10%;
+    animation-duration: 13s;
+    animation-delay: -2s;
+}
+
+.particle:nth-child(2) {
+    left: 24%;
+    width: 0.28rem;
+    height: 0.28rem;
+    animation-duration: 16s;
+    animation-delay: -9s;
+}
+
+.particle:nth-child(3) {
+    left: 42%;
+    animation-duration: 11s;
+    animation-delay: -4s;
+}
+
+.particle:nth-child(4) {
+    left: 67%;
+    width: 0.34rem;
+    height: 0.34rem;
+    animation-duration: 14s;
+    animation-delay: -7s;
+}
+
+.particle:nth-child(5) {
+    left: 79%;
+    animation-duration: 17s;
+    animation-delay: -1s;
+}
+
+.particle:nth-child(6) {
+    left: 90%;
+    width: 0.25rem;
+    height: 0.25rem;
+    animation-duration: 12s;
+    animation-delay: -6s;
+}
+
+.scene-shell {
     display: grid;
     place-items: center;
-    height: 100vh;
-    text-align: center;
+    padding: 24px;
+    z-index: 2;
+}
+
+.scene {
+    width: min(100%, 900px);
+}
+
+.scene-hidden {
+    display: none;
+}
+
+.intro-copy {
+    max-width: 720px;
+}
+
+.eyebrow {
+    margin: 0 0 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    font-size: 0.82rem;
+}
+
+.type-line {
+    margin: 0;
+    min-height: 3lh;
+    font-size: clamp(2rem, 4vw, 4.5rem);
+    line-height: 1.1;
+    font-weight: 400;
+    text-shadow: 1px 1px 0 rgba(110, 28, 15, 0.18);
+}
+
+.caret {
+    display: inline-block;
+    width: 0.08em;
+    height: 0.95em;
+    margin-left: 0.08em;
+    vertical-align: -0.08em;
+    background: currentColor;
+    animation: blink 1s steps(1) infinite;
+}
+
+.placeholder-copy {
+    color: var(--text-soft);
+    font-size: 1rem;
+}
+
+@keyframes blink {
+    0%,
+    49% {
+        opacity: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes float-up {
+    from {
+        transform: translate3d(0, 0, 0) scale(0.85);
+        opacity: 0;
+    }
+
+    10%,
+    75% {
+        opacity: 1;
+    }
+
+    to {
+        transform: translate3d(-18px, -120vh, 0) scale(1.15);
+        opacity: 0;
+    }
+}
+
+@keyframes gaussian-noise {
+    0% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 0.18;
+        filter: blur(0.15px) contrast(1.02);
+    }
+
+    25% {
+        transform: translate3d(-1px, 1px, 0) scale(1.015);
+        opacity: 0.26;
+        filter: blur(0.45px) contrast(1.05);
+    }
+
+    50% {
+        transform: translate3d(1px, -1px, 0) scale(0.99);
+        opacity: 0.2;
+        filter: blur(0.2px) contrast(0.98);
+    }
+
+    75% {
+        transform: translate3d(-0.5px, -1px, 0) scale(1.02);
+        opacity: 0.28;
+        filter: blur(0.55px) contrast(1.08);
+    }
+
+    100% {
+        transform: translate3d(0.5px, 0.5px, 0) scale(1);
+        opacity: 0.22;
+        filter: blur(0.25px) contrast(1.01);
+    }
+}
+
+@media (max-width: 640px) {
+    .scene-shell {
+        padding: 20px;
+        align-items: center;
+    }
+
+    .type-line {
+        min-height: 4lh;
+    }
 }
