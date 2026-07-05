@@ -33,12 +33,11 @@ function resizeNoiseCanvas() {
         return;
     }
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     noiseWidth = Math.max(1, Math.floor(window.innerWidth / 3));
     noiseHeight = Math.max(1, Math.floor(window.innerHeight / 3));
 
-    noiseCanvas.width = Math.floor(noiseWidth * dpr);
-    noiseCanvas.height = Math.floor(noiseHeight * dpr);
+    noiseCanvas.width = noiseWidth;
+    noiseCanvas.height = noiseHeight;
     noiseCanvas.style.width = "100%";
     noiseCanvas.style.height = "100%";
 
@@ -48,8 +47,6 @@ function resizeNoiseCanvas() {
         return;
     }
 
-    noiseContext.setTransform(1, 0, 0, 1, 0, 0);
-    noiseContext.scale(dpr, dpr);
     noiseImageData = noiseContext.createImageData(noiseWidth, noiseHeight);
     noiseFrameBuffer = noiseImageData.data;
 }
